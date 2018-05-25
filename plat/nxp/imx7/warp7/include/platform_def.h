@@ -176,4 +176,11 @@
  */
 #define SYS_COUNTER_FREQ_IN_TICKS	((1000 * 1000 * 1000) / 16)
 
+/* Declare architectural extension sec to enable "smc #0" to compile */
+#ifdef __ASSEMBLY__
+#ifndef __LINKER__
+.arch_extension	sec
+#endif
+#endif
+
 #endif /* __PLATFORM_DEF_H__ */
