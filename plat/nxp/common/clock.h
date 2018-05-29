@@ -40,6 +40,7 @@ struct ccm_clk_gate_ctrl {
 #define CCM_CCGR_SETTING3_DOM_CLK_RUN_WAIT	BIT(13)
 #define CCM_CCGR_SETTING3_DOM_CLK_ALWAYS	(BIT(13) | BIT(12))
 
+/* Clock target block */
 struct ccm_target_root_ctrl {
 	uint32_t ccm_target_root;
 	uint32_t ccm_target_root_set;
@@ -63,6 +64,44 @@ struct ccm_target_root_ctrl {
 	uint32_t ccm_access_ctrl_clr;
 	uint32_t ccm_access_ctrl_tog;
 };
+
+#define CCM_TARGET_ROOT_ENABLE		BIT(28)
+#define CCM_TARGET_MUX(x)		(((x) - 1) << 24)
+#define CCM_TARGET_PRE_PODF(x)		(((x) - 1) << 16)
+#define CCM_TARGET_POST_PODF(x)		((x) - 1)
+
+#define CCM_MISC_VIOLATE		BIT(8)
+#define CCM_MISC_TIMEOUT		BIT(4)
+#define CCM_MISC_AUTHEN_FAIL		BIT(0)
+
+#define CCM_POST_BUSY2			BIT(31)
+#define CCM_POST_SELECT_BRANCH_A	BIT(28)
+#define CCM_POST_BUSY1			BIT(7)
+#define CCM_POST_POST_PODF(x)		((x) - 1)
+
+#define CCM_PRE_BUSY4			BIT(31)
+#define CCM_PRE_ENABLE_A		BIT(28)
+#define CCM_PRE_MUX_A(x)		(((x) - 1) << 24)
+#define CCM_PRE_BUSY3			BIT(19)
+#define CCM_PRE_PODF_A(x)		(((x) - 1) << 16)
+#define CCM_PRE_BUSY1			BIT(15)
+#define CCM_PRE_ENABLE_B		BIT(12)
+#define CCM_PRE_MUX_B(x)		(((x) - 1) << 8)
+#define CCM_PRE_BUSY0			BIT(3)
+#define CCM_PRE_POST_PODF(x)		((x) - 1)
+
+#define CCM_ACCESS_CTRL_LOCK		BIT(31)
+#define CCM_ACCESS_SEMA_ENABLE		BIT(28)
+#define CCM_ACCESS_DOM3_WHITELIST	BIT(27)
+#define CCM_ACCESS_DOM2_WHITELIST	BIT(26)
+#define CCM_ACCESS_DOM1_WHITELIST	BIT(25)
+#define CCM_ACCESS_DOM0_WHITELIST	BIT(24)
+#define CCM_ACCESS_MUTEX		BIT(20)
+#define CCM_ACCESS_OWNER_ID(x)		((x) << 16)
+#define CCM_ACCESS_DOM3_INFO(x)		((x) << 12)
+#define CCM_ACCESS_DOM2_INFO(x)		((x) << 8)
+#define CCM_ACCESS_DOM1_INFO(x)		((x) << 4)
+#define CCM_ACCESS_DOM0_INFO(x)		(x)
 
 #define CCM_PLL_CTRL_NUM	0x21
 #define CCM_CLK_GATE_CTRL_NUM	0xbf
