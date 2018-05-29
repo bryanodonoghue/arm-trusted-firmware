@@ -15,12 +15,30 @@ struct ccm_pll_ctrl {
 	uint32_t ccm_pll_ctrl_tog;
 };
 
+/* Clock gate control */
 struct ccm_clk_gate_ctrl {
 	uint32_t ccm_ccgr;
 	uint32_t ccm_ccgr_set;
 	uint32_t ccm_ccgr_clr;
 	uint32_t ccm_ccgr_tog;
 };
+
+#define CCM_CCGR_SETTING0_DOM_CLK_NONE		0
+#define CCM_CCGR_SETTING0_DOM_CLK_RUN		BIT(0)
+#define CCM_CCGR_SETTING0_DOM_CLK_RUN_WAIT	BIT(1)
+#define CCM_CCGR_SETTING0_DOM_CLK_ALWAYS	(BIT(1) | BIT(0))
+#define CCM_CCGR_SETTING1_DOM_CLK_NONE		0
+#define CCM_CCGR_SETTING1_DOM_CLK_RUN		BIT(4)
+#define CCM_CCGR_SETTING1_DOM_CLK_RUN_WAIT	BIT(5)
+#define CCM_CCGR_SETTING1_DOM_CLK_ALWAYS	(BIT(5) | BIT(4))
+#define CCM_CCGR_SETTING2_DOM_CLK_NONE		0
+#define CCM_CCGR_SETTING2_DOM_CLK_RUN		BIT(8)
+#define CCM_CCGR_SETTING2_DOM_CLK_RUN_WAIT	BIT(9)
+#define CCM_CCGR_SETTING2_DOM_CLK_ALWAYS	(BIT(9) | BIT(8))
+#define CCM_CCGR_SETTING3_DOM_CLK_NONE		0
+#define CCM_CCGR_SETTING3_DOM_CLK_RUN		BIT(12)
+#define CCM_CCGR_SETTING3_DOM_CLK_RUN_WAIT	BIT(13)
+#define CCM_CCGR_SETTING3_DOM_CLK_ALWAYS	(BIT(13) | BIT(12))
 
 struct ccm_target_root_ctrl {
 	uint32_t ccm_target_root;
