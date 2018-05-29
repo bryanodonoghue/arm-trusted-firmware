@@ -49,4 +49,7 @@
 /* QSPI1 FLASH */
 #define QSPI_FLASH_BASE			0x60000000	/* QSPI1 flash */
 
+/* AIPS1 block addresses */
+#define CCM_BASE			(AIPS1_BASE + 0x380000)
+
 #endif /* __REGS_H__ */
