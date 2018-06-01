@@ -10,6 +10,30 @@
 #include <imx-regs.h>
 #include "clock.h"
 
+static void mxc_clock_target_set(unsigned int id, uint32_t val)
+{
+	struct ccm *ccm = ((struct ccm *)CCM_BASE);
+	uintptr_t addr;
+
+	if (id > CCM_ROOT_CTRL_NUM)
+		return;
+
+	addr = (uintptr_t)&ccm->ccm_root_ctrl[id].ccm_target_root;
+	mmio_write_32(addr, val);
+}
+
+static void mxc_clock_target_clr(unsigned int id, uint32_t val)
+{
+	struct ccm *ccm = ((struct ccm *)CCM_BASE);
+	uintptr_t addr;
+
+	if (id > CCM_ROOT_CTRL_NUM)
+		return;
+
+	addr = (uintptr_t)&ccm->ccm_root_ctrl[id].ccm_target_root_clr;
+	mmio_write_32(addr, val);
+}
+
 static void mxc_clock_gate_enable(unsigned int id, bool enable)
 {
 	struct ccm *ccm = ((struct ccm *)CCM_BASE);
