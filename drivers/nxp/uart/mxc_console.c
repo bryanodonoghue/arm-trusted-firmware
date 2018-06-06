@@ -35,6 +35,19 @@ int console_core_init(uintptr_t base_addr, unsigned int uart_clk,
  */
 int console_core_putc(int c, uintptr_t base_addr)
 {
+	uint32_t val;
+
+	if (c == '\n')
+		console_core_putc('\r', base_addr);
+
+	/* Write data */
+	write_reg(base_addr, MXC_UART_TXD_OFFSET, c);
+
+	/* Wait for transmit */
+	do {
+		val = read_reg(base_addr, MXC_UART_STAT2_OFFSET);
+	} while (!(val & MXC_UART_STAT2_TXDC));
+
 	return 0;
 }
 
