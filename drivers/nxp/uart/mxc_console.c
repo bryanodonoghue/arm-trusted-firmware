@@ -48,7 +48,14 @@ int console_core_putc(int c, uintptr_t base_addr)
  */
 int console_core_getc(uintptr_t base_addr)
 {
-	return 0;
+	uint32_t val;
+
+	val = read_reg(base_addr, MXC_UART_TS_OFFSET);
+	if (val & MXC_UART_TS_RXEMPTY)
+		return -1;
+
+	val = read_reg(base_addr, MXC_UART_RXD_OFFSET);
+	return (int)(val & 0x000000FF);
 }
 
 /*
