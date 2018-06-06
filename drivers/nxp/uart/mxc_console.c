@@ -7,6 +7,16 @@
 #include <stdint.h>
 #include "mxc_console.h"
 
+static void write_reg(uintptr_t base, uint32_t offset, uint32_t val)
+{
+	mmio_write_32(base + offset, val);
+}
+
+static uint32_t read_reg(uintptr_t base, uint32_t offset)
+{
+	return mmio_read_32(base + offset);
+}
+
 int console_core_init(uintptr_t base_addr, unsigned int uart_clk,
 		      unsigned int baud_rate)
 {
