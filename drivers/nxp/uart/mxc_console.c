@@ -5,7 +5,47 @@
  */
 #include <arch.h>
 #include <stdint.h>
+#include <mmio.h>
 #include "mxc_console.h"
+
+/* TX/RX FIFO threshold */
+#define TX_RX_THRESH 2
+
+struct clk_div_factors {
+	uint32_t fcr_div;
+	uint32_t bmr_div;
+};
+
+static struct clk_div_factors clk_div[] = {
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV1,
+		.bmr_div = 1,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV2,
+		.bmr_div = 2,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV3,
+		.bmr_div = 3,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV4,
+		.bmr_div = 4,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV5,
+		.bmr_div = 5,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV6,
+		.bmr_div = 6,
+	},
+	{
+		.fcr_div = MXC_UART_FCR_RFDIV7,
+		.bmr_div = 7,
+	},
+};
 
 static void write_reg(uintptr_t base, uint32_t offset, uint32_t val)
 {
@@ -20,6 +60,53 @@ static uint32_t read_reg(uintptr_t base, uint32_t offset)
 int console_core_init(uintptr_t base_addr, unsigned int uart_clk,
 		      unsigned int baud_rate)
 {
+	uint32_t val;
+	uint8_t clk_idx = 1;
+
+	/* Reset UART */
+	write_reg(base_addr, MXC_UART_CR2_OFFSET, 0);
+	do {
+		val = read_reg(base_addr, MXC_UART_CR2_OFFSET);
+	} while (!(val & MXC_UART_CR2_SRST));
+
+	/* Enable UART */
+	write_reg(base_addr, MXC_UART_CR1_OFFSET, MXC_UART_CR1_UARTEN);
+
+	/* Ignore RTS, 8N1, enable tx/rx, disable reset */
+	val = (MXC_UART_CR2_IRTS | MXC_UART_CR2_WS | MXC_UART_CR2_TXEN |
+	       MXC_UART_CR2_RXEN | MXC_UART_CR2_SRST);
+	write_reg(base_addr, MXC_UART_CR2_OFFSET, val);
+
+	/* No parity, autobaud detect-old, rxdmuxsel=1 (fixed i.mx7) */
+	val = MXC_UART_CR3_ADNIMP | MXC_UART_CR3_RXDMUXSEL;
+	write_reg(base_addr, MXC_UART_CR3_OFFSET, val);
+
+	/* Set CTS FIFO trigger to 32 bytes bits 15:10 */
+	write_reg(base_addr, MXC_UART_CR4_OFFSET, 0x8000);
+
+	/* TX/RX-thresh = 2 bytes, DCE (bit6 = 0), refclk @24MHz / 4 */
+	val = MXC_UART_FCR_TXTL(TX_RX_THRESH) | MXC_UART_FCR_RXTL(TX_RX_THRESH) |
+	      clk_div[clk_idx].fcr_div;
+	write_reg(base_addr, MXC_UART_FCR_OFFSET, val);
+
+	/*
+	 * The equation for BAUD rate calculation is
+	 * RefClk = Supplied clock / FCR_DIVx
+	 *
+	 * BAUD  =    Refclk
+	 *         ------------
+	 *       16 x (UBMR + 1/ UBIR + 1)
+	 *
+	 * We write 0x0f into UBIR to remove the 16 mult
+	 * BAUD  =    6000000
+	 *         ------------
+	 *       16 x (UBMR + 1/ 15 + 1)
+	 */
+
+	write_reg(base_addr, MXC_UART_BIR_OFFSET, 0x0f);
+	val = ((uart_clk / clk_div[clk_idx].bmr_div) / baud_rate) - 1;
+	write_reg(base_addr, MXC_UART_BMR_OFFSET, val);
+
 	return 0;
 }
 
