@@ -7,12 +7,14 @@
 #include <debug.h>
 #include <io_block.h>
 #include <io_driver.h>
+#include <io_fip.h>
 #include <io_memmap.h>
 #include <platform_def.h>
 
 static const io_dev_connector_t *memmap_dev_con;
 static uintptr_t memmap_dev_handle;
 
+static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;
 
 static const io_block_spec_t fip_block_spec = {
@@ -98,5 +100,8 @@ void plat_warp7_io_setup(void)
 
 	result = io_dev_open(memmap_dev_con, (uintptr_t)NULL,
 			     &memmap_dev_handle);
+	assert(result == 0);
+
+	result = register_io_dev_fip(&fip_dev_con);
 	assert(result == 0);
 }
