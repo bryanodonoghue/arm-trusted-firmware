@@ -55,6 +55,11 @@ static const struct plat_io_policy policies[] = {
 		(uintptr_t)&fip_block_spec,
 		open_memmap
 	},
+	[BL32_IMAGE_ID] = {
+		&fip_dev_handle,
+		(uintptr_t)&bl32_uuid_spec,
+		open_fip
+	},
 };
 
 static int open_fip(const uintptr_t spec)
