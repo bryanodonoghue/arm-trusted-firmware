@@ -24,6 +24,14 @@ struct plat_io_policy {
 	int (*check)(const uintptr_t spec);
 };
 
+static const struct plat_io_policy policies[] = {
+	[FIP_IMAGE_ID] = {
+		&memmap_dev_handle,
+		(uintptr_t)&fip_block_spec,
+		open_memmap
+	},
+};
+
 static int open_memmap(const uintptr_t spec)
 {
 	int result;
