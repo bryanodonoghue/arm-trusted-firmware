@@ -21,6 +21,7 @@ PLAT_INCLUDES		:=	-Iinclude/common/tbbr			\
 				-Iinclude/plat/arm/common/		\
 				-Iplat/nxp/common/			\
 				-Iplat/nxp/imx7/warp7/include		\
+				-Idrivers/nxp/uart			\
 				-Iplat/nxp/imx7/include
 
 # Translation tables library
