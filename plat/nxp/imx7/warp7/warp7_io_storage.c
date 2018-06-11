@@ -23,6 +23,10 @@ static const io_block_spec_t fip_block_spec = {
 	.length = WARP7_FIP_SIZE
 };
 
+static const io_uuid_spec_t bl32_uuid_spec = {
+	.uuid = UUID_SECURE_PAYLOAD_BL32,
+};
+
 static int open_fip(const uintptr_t spec);
 static int open_memmap(const uintptr_t spec);
 
