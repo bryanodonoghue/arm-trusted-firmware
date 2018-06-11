@@ -104,4 +104,8 @@ void plat_warp7_io_setup(void)
 
 	result = register_io_dev_fip(&fip_dev_con);
 	assert(result == 0);
+
+	result = io_dev_open(fip_dev_con, (uintptr_t)NULL,
+			     &fip_dev_handle);
+	assert(result == 0);
 }
