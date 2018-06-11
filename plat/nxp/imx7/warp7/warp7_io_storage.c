@@ -3,7 +3,13 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+#include <io_block.h>
 #include <platform_def.h>
+
+static const io_block_spec_t fip_block_spec = {
+	.offset = WARP7_FIP_BASE,
+	.length = WARP7_FIP_SIZE
+};
 
 /* TODO: this structure is replicated multiple times. rationalize it ! */
 struct plat_io_policy {
