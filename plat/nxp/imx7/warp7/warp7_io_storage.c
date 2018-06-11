@@ -54,7 +54,19 @@ static int open_memmap(const uintptr_t spec)
 int plat_get_image_source(unsigned int image_id, uintptr_t *dev_handle,
 			  uintptr_t *image_spec)
 {
-	return 0;
+	int result;
+	const struct plat_io_policy *policy;
+
+	assert(image_id < ARRAY_SIZE(policies));
+
+	policy = &policies[image_id];
+	result = policy->check(policy->image_spec);
+	assert(result == 0);
+
+	*image_spec = policy->image_spec;
+	*dev_handle = *policy->dev_handle;
+
+	return result;
 }
 
 void plat_warp7_io_setup(void)
