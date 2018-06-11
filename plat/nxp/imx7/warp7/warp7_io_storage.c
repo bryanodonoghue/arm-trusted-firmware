@@ -53,3 +53,7 @@ int plat_get_image_source(unsigned int image_id, uintptr_t *dev_handle,
 {
 	return 0;
 }
+
+void plat_warp7_io_setup(void)
+{
+}
