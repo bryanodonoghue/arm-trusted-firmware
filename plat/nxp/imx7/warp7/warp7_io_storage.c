@@ -64,4 +64,7 @@ void plat_warp7_io_setup(void)
 	result = register_io_dev_memmap(&memmap_dev_con);
 	assert(result == 0);
 
+	result = io_dev_open(memmap_dev_con, (uintptr_t)NULL,
+			     &memmap_dev_handle);
+	assert(result == 0);
 }
