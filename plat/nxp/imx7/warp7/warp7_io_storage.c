@@ -13,11 +13,14 @@
 static const io_dev_connector_t *memmap_dev_con;
 static uintptr_t memmap_dev_handle;
 
+static uintptr_t fip_dev_handle;
+
 static const io_block_spec_t fip_block_spec = {
 	.offset = WARP7_FIP_BASE,
 	.length = WARP7_FIP_SIZE
 };
 
+static int open_fip(const uintptr_t spec);
 static int open_memmap(const uintptr_t spec);
 
 /* TODO: this structure is replicated multiple times. rationalize it ! */
@@ -34,6 +37,23 @@ static const struct plat_io_policy policies[] = {
 		open_memmap
 	},
 };
+
+static int open_fip(const uintptr_t spec)
+{
+	int result;
+	uintptr_t local_image_handle;
+
+	/* See if a Firmware Image Package is available */
+	result = io_dev_init(fip_dev_handle, (uintptr_t)FIP_IMAGE_ID);
+	if (result == 0) {
+		result = io_open(fip_dev_handle, spec, &local_image_handle);
+		if (result == 0) {
+			VERBOSE("Using FIP\n");
+			io_close(local_image_handle);
+		}
+	}
+	return result;
+}
 
 static int open_memmap(const uintptr_t spec)
 {
