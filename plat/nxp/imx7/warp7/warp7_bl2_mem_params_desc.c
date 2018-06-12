@@ -52,6 +52,28 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 				      IMAGE_ATTRIB_SKIP_LOADING),
 		.next_handoff_image_id = INVALID_IMAGE_ID,
 	},
+	{
+		.image_id = BL33_IMAGE_ID,
+		SET_STATIC_PARAM_HEAD(ep_info, PARAM_EP, VERSION_2,
+				      entry_point_info_t,
+				      NON_SECURE | EXECUTABLE),
+		# ifdef PRELOADED_BL33_BASE
+			.ep_info.pc = PRELOADED_BL33_BASE,
+
+			SET_STATIC_PARAM_HEAD(image_info, PARAM_EP,
+					      VERSION_2, image_info_t,
+					      IMAGE_ATTRIB_SKIP_LOADING),
+		# else
+			.ep_info.pc = BL33_BASE,
+
+			SET_STATIC_PARAM_HEAD(image_info, PARAM_EP,
+					      VERSION_2, image_info_t, 0),
+			.image_info.image_base = WARP7_UBOOT_BASE,
+			.image_info.image_max_size = WARP7_UBOOT_SIZE,
+		# endif /* PRELOADED_BL33_BASE */
+
+		.next_handoff_image_id = INVALID_IMAGE_ID,
+	}
 };
 
 REGISTER_BL_IMAGE_DESCS(bl2_mem_params_descs);
