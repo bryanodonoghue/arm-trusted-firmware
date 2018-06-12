@@ -14,7 +14,8 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 		.image_id = BL32_IMAGE_ID,
 
 		SET_STATIC_PARAM_HEAD(ep_info, PARAM_EP, VERSION_2,
-				      entry_point_info_t, SECURE | EXECUTABLE),
+				      entry_point_info_t,
+				      SECURE | EXECUTABLE | EP_FIRST_EXE),
 		.ep_info.pc = BL32_BASE,
 
 		SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2,
