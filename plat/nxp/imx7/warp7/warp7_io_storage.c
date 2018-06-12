@@ -35,6 +35,10 @@ static const io_uuid_spec_t bl32_extra2_uuid_spec = {
 	.uuid = UUID_SECURE_PAYLOAD_BL32_EXTRA2,
 };
 
+static const io_uuid_spec_t bl33_uuid_spec = {
+	.uuid = UUID_NON_TRUSTED_FIRMWARE_BL33,
+};
+
 static int open_fip(const uintptr_t spec);
 static int open_memmap(const uintptr_t spec);
 
