@@ -5,6 +5,7 @@
  */
 #include <assert.h>
 #include <debug.h>
+#include <firmware_image_package.h>
 #include <io_block.h>
 #include <io_driver.h>
 #include <io_fip.h>
