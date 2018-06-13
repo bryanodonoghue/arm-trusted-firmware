@@ -3,11 +3,14 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+#include <assert.h>
 #include <debug.h>
 #include <io_block.h>
+#include <io_driver.h>
 #include <io_memmap.h>
 #include <platform_def.h>
 
+static const io_dev_connector_t *memmap_dev_con;
 static uintptr_t memmap_dev_handle;
 
 static const io_block_spec_t fip_block_spec = {
@@ -56,4 +59,9 @@ int plat_get_image_source(unsigned int image_id, uintptr_t *dev_handle,
 
 void plat_warp7_io_setup(void)
 {
+	int result;
+
+	result = register_io_dev_memmap(&memmap_dev_con);
+	assert(result == 0);
+
 }
