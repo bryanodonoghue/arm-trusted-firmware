@@ -36,6 +36,7 @@ BL2_SOURCES		+=	common/desc_image_load.c			\
 				lib/aarch32/arm32_aeabi_divmod.c		\
 				lib/aarch32/arm32_aeabi_divmod_a32.S		\
 				lib/cpus/aarch32/cortex_a7.S			\
+				lib/optee/optee_utils.c				\
 				plat/nxp/common/aips.c				\
 				plat/nxp/common/wdog.c				\
 				plat/nxp/common/clock.c				\
