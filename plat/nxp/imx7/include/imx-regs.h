@@ -56,4 +56,7 @@
 /* Define the maximum number of UART blocks on this SoC */
 #define MXC_MAX_UART_NUM		0x07
 
+/* Define the number of CSU registers for this SoC */
+#define MXC_MAX_CSU_REGS		0x40
+
 #endif /* __REGS_H__ */
