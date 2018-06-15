@@ -33,6 +33,12 @@
 #define CSU_CSL_SSR_S2		BIT(1)
 #define CSU_CSL_SUR_S2		BIT(0)
 
+#define CSU_CSL_OPEN_ACCESS  (CSU_CSL_NSW_S1 | CSU_CSL_NUW_S1 | CSU_CSL_SSW_S1 |\
+			      CSU_CSL_SUW_S1 | CSU_CSL_NSR_S1 | CSU_CSL_NUR_S1 |\
+			      CSU_CSL_SSR_S1 | CSU_CSL_SUR_S1 | CSU_CSL_NSW_S2 |\
+			      CSU_CSL_NUW_S2 | CSU_CSL_SSW_S2 | CSU_CSL_SUW_S2 |\
+			      CSU_CSL_NSR_S2 | CSU_CSL_NUR_S2 | CSU_CSL_SSR_S2 |\
+			      CSU_CSL_SUR_S2)
 void csu_init(void);
 
 #endif /* __CSU_H__ */
