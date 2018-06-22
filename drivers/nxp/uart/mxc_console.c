@@ -69,10 +69,6 @@ int console_core_init(uintptr_t base_addr, unsigned int uart_clk,
 		val = read_reg(base_addr, MXC_UART_CR2_OFFSET);
 	} while (!(val & MXC_UART_CR2_SRST));
 
-	/* FIXME: Need to delay after CR2 reset otherwise output is currupted */
-	for (val = 0; val < 10000; val++)
-		__asm__ __volatile__("nop\n");
-
 	/* Enable UART */
 	write_reg(base_addr, MXC_UART_CR1_OFFSET, MXC_UART_CR1_UARTEN);
 
