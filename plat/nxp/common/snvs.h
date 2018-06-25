@@ -78,4 +78,6 @@ struct snvs {
 #define HPCOMR_SSM_ST_DIS	BIT(1)
 #define HPCOMR_SSM_ST		BIT(0)
 
+void snvs_init(void);
+
 #endif /* __SNVS_H__ */
