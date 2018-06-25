@@ -7,6 +7,7 @@
 #define __SNVS_H__
 
 #include <stdint.h>
+#include <arch.h>
 
 struct snvs {
 	uint32_t hplr;
@@ -58,5 +59,23 @@ struct snvs {
 	uint32_t hpvidr1;
 	uint32_t hpvidr2;
 };
+
+
+/* Define the HPCOMR bits */
+#define HPCOMR_NPSWA_EN		BIT(31)
+#define HPCOMR_HAC_STOP		BIT(19)
+#define HPCOMR_HAC_CLEAR	BIT(18)
+#define HPCOMR_HAC_LOAD		BIT(17)
+#define HPCOMR_HAC_EN		BIT(16)
+#define HPCOMR_MKS_EN		BIT(13)
+#define HPCOMR_PROG_ZMK		BIT(12)
+#define HPCOMR_SW_LPSV		BIT(10)
+#define HPCOMR_SW_FSV		BIT(9)
+#define HPCOMR_SW_SV		BIT(8)
+#define HPCOMR_LP_SWR_DIS	BIT(5)
+#define HPCOMR_LP_SWR		BIT(4)
+#define HPCOMR_SSM_SFNS_DIS	BIT(2)
+#define HPCOMR_SSM_ST_DIS	BIT(1)
+#define HPCOMR_SSM_ST		BIT(0)
 
 #endif /* __SNVS_H__ */
