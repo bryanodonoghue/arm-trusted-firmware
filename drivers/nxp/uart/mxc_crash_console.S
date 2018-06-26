@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include <arch.h>
-#include <console_macros.S>
+#include <asm_macros.S>
+#include <assert_macros.S>
+#include "mxc_console.h"
 
 	.globl	mxc_crash_console_init
 	.globl	mxc_crash_console_putc
@@ -96,9 +98,29 @@ endfunc mxc_crash_console_init
 	 * In : r0 - character to be printed
 	 *      r1 - console base address
 	 * Out : return -1 on error else return character.
-	 * Clobber list : r2
+	 * Clobber list : r2, r7
 	 * --------------------------------------------------------
 	 */
 func mxc_crash_console_putc
+	/* Output specified character to UART shift-register */
+	str	r0, [r1, #MXC_UART_TXD_OFFSET]
 
+        /* Wait for transmit MXC_UART_STAT2_OFFSET.MXC_UART_STAT2_TXDC == 1 */
+__putc_spin_ready:
+	ldr	r7, [r1, #MXC_UART_STAT2_OFFSET]
+	ands	r7, #MXC_UART_STAT2_TXDC
+	beq	__putc_spin_ready
+
+        /* Transmit complete do we need to fixup \n to \n\r */
+	cmp	r0, #10
+	beq	__putc_fixup_lf
+
+	/* No fixup necessary - exit here */
+	movs	r0, #0
+	bx	lr
+
+	/* Fixup \n to \n\r */
+__putc_fixup_lf:
+	movs	r0, #13
+	b	mxc_crash_console_putc
 endfunc mxc_crash_console_putc
