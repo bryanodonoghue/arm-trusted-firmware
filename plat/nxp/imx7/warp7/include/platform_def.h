@@ -91,14 +91,14 @@
 #define SHARED_RAM_BASE			(BL2_RAM_BASE - SHARED_RAM_SIZE)
 #define SHARED_RAM_LIMIT		(SHARED_RAM_BASE + SHARED_RAM_SIZE)
 
-/* Define the absolute location of u-boot 0x80000000 - 0x80100000 */
+/* Define the absolute location of u-boot 0x87800000 - 0x87900000 */
 #define WARP7_UBOOT_SIZE		0x00100000
 #define WARP7_UBOOT_BASE		(DRAM_BASE + 0x7800000)
 #define WARP7_UBOOT_LIMIT		(WARP7_UBOOT_BASE + WARP7_UBOOT_SIZE)
 
-/* Define FIP image location adjacent to u-boot 0x80100000 - 0x80200000 */
+/* Define FIP image absolute location 0x80000000 - 0x80100000 */
 #define WARP7_FIP_SIZE			0x00100000
-#define WARP7_FIP_BASE			(DRAM_BASE)	
+#define WARP7_FIP_BASE			(DRAM_BASE)
 #define WARP7_FIP_LIMIT			(WARP7_FIP_BASE + WARP7_FIP_SIZE)
 
 /*
@@ -133,10 +133,13 @@
  *            |       DDR       | Shared MBOX RAM
  * 0x9de00000 +-----------------+
  *            |       DDR       | Unallocated
- * 0x80200000 +-----------------+
- *            |       DDR       | FIP/DTB
- * 0x80100000 +-----------------+
+ * 0x87900000 +-----------------+
  *            |       DDR       | BL33/U-BOOT
+ * 0x87800000 +-----------------+
+ *            |       DDR       | Unallocated
+ *            |       DDR       | Unallocated
+ * 0x80100000 +-----------------+
+ *            |       DDR       | FIP
  * 0x80000000 +-----------------+
  *            |     SOC I/0     |
  * 0x00a00000 +-----------------+
