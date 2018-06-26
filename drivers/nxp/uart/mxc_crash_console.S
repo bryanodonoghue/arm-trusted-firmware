@@ -20,11 +20,73 @@
 	 *     r1 - Uart clock in Hz
 	 *     r2 - Baud rate
 	 * Out: return 1 on success else 0 on error
-	 * Clobber list : r1, r2, r3
+	 * Clobber list : r1, r2, r3, r4
 	 * -----------------------------------------------
 	 */
 func mxc_crash_console_init
+	/* Free up r1 as a scratch reg */
+	mov     r4, r0
+	mov     r0, r1
 
+	/* Reset UART via CR2 */
+	add     r1, r4, #MXC_UART_CR2_OFFSET
+	movs    r3, #0
+	str     r3, [r4, #MXC_UART_CR2_OFFSET]
+
+	/* Wait for reset complete */
+__wait_cr2_reset:
+	ldr     r3, [r1, #0]
+	ands    r3, #MXC_UART_CR2_SRST
+	beq     __wait_cr2_reset
+
+	/* Enable UART */
+	movs    r3, #MXC_UART_CR1_UARTEN
+	mov     r1, r2
+	str     r3, [r4, #MXC_UART_CR1_OFFSET]
+
+	/*
+	 * Ignore RTC/CTS - disable reset
+	 * Magic value #16423 =>
+	 * MXC_UART_CR2_IRTS | MXC_UART_CR2_WS | MXC_UART_CR2_TXEN | MXC_UART_CR2_RXEN | MXC_UART_CR2_SRST
+	 */
+	movw    r3, #16423
+	str     r3, [r4, #MXC_UART_CR2_OFFSET]
+
+	/*
+	 * No parity, autobaud detect-old, rxdmuxsel=1 (fixed i.mx7)
+	 * Magic value => #132
+	 * MXC_UART_CR3_ADNIMP | MXC_UART_CR3_RXDMUXSEL
+	 */
+	movs    r3, #132
+	str     r3, [r4, #MXC_UART_CR3_OFFSET]
+
+	/*
+	 * Set CTS FIFO trigger to 32 bytes bits 15:10
+	 * Magic value => #32768
+	 * FIFO trigger bitmask 100000
+	 * */
+	mov     r3, #32768
+	str     r3, [r4, #MXC_UART_CR4_OFFSET]
+
+	/*
+	 * TX/RX-thresh = 2 bytes, DCE (bit6 = 0), refclk @24MHz / 4
+	 * Magic value #2562
+	 * MXC_UART_FCR_TXTL(TX_RX_THRESH) | MXC_UART_FCR_RXTL(TX_RX_THRESH) | MXC_UART_FCR_RFDIV2
+	 */
+	movw    r3, #2562
+	str     r3, [r4, #MXC_UART_FCR_OFFSET]
+
+	/* This BIR should be set to 0x0F prior to writing the BMR */
+	movs    r3, #15
+	str     r3, [r4, #MXC_UART_BIR_OFFSET]
+
+	/* Hard-code to 115200 @ 24 MHz */
+	movs	r0, #104
+	str     r0, [r4, #MXC_UART_BMR_OFFSET]
+
+	/* Indicate success */
+	movs    r0, #1
+	bx	lr
 endfunc mxc_crash_console_init
 
 	/* --------------------------------------------------------
