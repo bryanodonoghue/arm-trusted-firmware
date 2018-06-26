@@ -98,6 +98,11 @@
 #define WARP7_FIP_BASE			(DRAM_BASE)
 #define WARP7_FIP_LIMIT			(WARP7_FIP_BASE + WARP7_FIP_SIZE)
 
+/* Define the absolute location of DTB 0x83000000 - 0x83100000 */
+#define WARP7_DTB_SIZE			0x00100000
+#define WARP7_DTB_BASE			(DRAM_BASE + 0x03000000)
+#define WARP7_DTB_LIMIT			(WARP7_DTB_BASE + WARP7_DTB_SIZE)
+
 /*
  * BL2 specific defines.
  *
@@ -134,6 +139,9 @@
  *            |       DDR       | BL33/U-BOOT
  * 0x87800000 +-----------------+
  *            |       DDR       | Unallocated
+ * 0x83100000 +-----------------+
+ *            |       DDR       | DTB
+ * 0x83000000 +-----------------+
  *            |       DDR       | Unallocated
  * 0x80100000 +-----------------+
  *            |       DDR       | FIP
