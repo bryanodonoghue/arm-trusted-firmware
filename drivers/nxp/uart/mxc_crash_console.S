@@ -8,7 +8,6 @@
 
 	.globl	mxc_crash_console_init
 	.globl	mxc_crash_console_putc
-	.globl	mxc_crash_console_flush
 
 	/* -----------------------------------------------
 	 * int mxc_crash_console_init(uintptr_t base_addr,
@@ -41,16 +40,3 @@ endfunc mxc_crash_console_init
 func mxc_crash_console_putc
 
 endfunc mxc_crash_console_putc
-
-	/* ---------------------------------------------
-	 * int mxc_crash_console_flush(uintptr_t base_addr)
-	 * Function to force a write of all buffered
-	 * data that hasn't been output.
-	 * In : r0 - console base address
-	 * Out : return -1 on error else return 0.
-	 * Clobber list : r0, r1
-	 * ---------------------------------------------
-	 */
-func mxc_crash_console_flush
-
-endfunc mxc_crash_console_flush
