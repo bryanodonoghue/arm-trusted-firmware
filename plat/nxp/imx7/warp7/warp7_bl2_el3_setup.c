@@ -52,6 +52,7 @@ int bl2_plat_handle_post_image_load(unsigned int image_id)
 {
 	int err = 0;
 	bl_mem_params_node_t *bl_mem_params = get_bl_mem_params_node(image_id);
+	bl_mem_params_node_t *hw_cfg_mem_params = NULL;
 
 	bl_mem_params_node_t *pager_mem_params = NULL;
 	bl_mem_params_node_t *paged_mem_params = NULL;
@@ -74,16 +75,19 @@ int bl2_plat_handle_post_image_load(unsigned int image_id)
 
 		/*
 		 * When ATF loads the DTB the address of the DTB is passed in
-		 * arg2, however for the WaRP7 we will have u-boot load the DTB
-		 * directly and therefore we won't be modifying the DTB in
-		 * OPTEE.
-		 * Just leave arg2 @ 0 for now - unless we deicide to switch up
-		 * the responsibility for loading DTB from u-boot to ATF
+		 * arg2, if an hw config image is present use the base address
+		 * as DTB address an pass it as arg2
 		 */
+		hw_cfg_mem_params = get_bl_mem_params_node(HW_CONFIG_ID);
+
 		bl_mem_params->ep_info.args.arg0 =
 					bl_mem_params->ep_info.args.arg1;
 		bl_mem_params->ep_info.args.arg1 = 0;
-		bl_mem_params->ep_info.args.arg2 = 0;
+		if (hw_cfg_mem_params)
+			bl_mem_params->ep_info.args.arg2 =
+					hw_cfg_mem_params->image_info.image_base;
+		else
+			bl_mem_params->ep_info.args.arg2 = 0;
 		bl_mem_params->ep_info.args.arg3 = 0;
 		bl_mem_params->ep_info.spsr = warp7_get_spsr_for_bl32_entry();
 		break;
@@ -178,8 +182,9 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 	VERBOSE("\tOPTEE      0x%08x-0x%08x\n", WARP7_OPTEE_BASE, WARP7_OPTEE_LIMIT);
 	VERBOSE("\tATF/BL2    0x%08x-0x%08x\n", BL2_RAM_BASE, BL2_RAM_LIMIT);
 	VERBOSE("\tSHRAM      0x%08x-0x%08x\n", SHARED_RAM_BASE, SHARED_RAM_LIMIT);
-	VERBOSE("\tUBOOT/BL33 0x%08x-0x%08x\n", WARP7_UBOOT_BASE, WARP7_UBOOT_LIMIT);
 	VERBOSE("\tFIP        0x%08x-0x%08x\n", WARP7_FIP_BASE, WARP7_FIP_LIMIT);
+	VERBOSE("\tDTB        0x%08x-0x%08x\n", WARP7_DTB_BASE, WARP7_DTB_LIMIT);
+	VERBOSE("\tUBOOT/BL33 0x%08x-0x%08x\n", WARP7_UBOOT_BASE, WARP7_UBOOT_LIMIT);
 }
 
 /*
