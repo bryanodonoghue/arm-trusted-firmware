@@ -5,6 +5,7 @@
  */
 #include <assert.h>
 #include <debug.h>
+#include <emmc.h>
 #include <firmware_image_package.h>
 #include <io_block.h>
 #include <io_driver.h>
@@ -12,16 +13,26 @@
 #include <io_memmap.h>
 #include <platform_def.h>
 
-static const io_dev_connector_t *memmap_dev_con;
-static uintptr_t memmap_dev_handle;
-
+#define FIP_MMAP
 static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;
+
+#ifndef FIP_MMAP
+static uintptr_t emmc_dev_handle;
+
+static int open_emmc(const uintptr_t spec);
+
+#else
+static const io_dev_connector_t *memmap_dev_con;
+static uintptr_t memmap_dev_handle;
 
 static const io_block_spec_t fip_block_spec = {
 	.offset = WARP7_FIP_BASE,
 	.length = WARP7_FIP_SIZE
 };
+static int open_memmap(const uintptr_t spec);
+#endif
+static int open_fip(const uintptr_t spec);
 
 static const io_uuid_spec_t bl32_uuid_spec = {
 	.uuid = UUID_SECURE_PAYLOAD_BL32,
@@ -42,9 +53,6 @@ static const io_uuid_spec_t bl32_extra2_uuid_spec = {
 static const io_uuid_spec_t bl33_uuid_spec = {
 	.uuid = UUID_NON_TRUSTED_FIRMWARE_BL33,
 };
-
-static int open_fip(const uintptr_t spec);
-static int open_memmap(const uintptr_t spec);
 
 /* TODO: this structure is replicated multiple times. rationalize it ! */
 struct plat_io_policy {
@@ -103,6 +111,21 @@ static int open_fip(const uintptr_t spec)
 	return result;
 }
 
+#ifndef FIP_MMAP
+static int open_emmc(const uintptr_t spec)
+{
+	int result;
+	uintptr_t local_handle;
+
+	result = io_dev_init(emmc_dev_handle, (uintptr_t)NULL);
+	if (result == 0) {
+		result = io_open(emmc_dev_handle, spec, &local_handle);
+		if (result == 0)
+			io_close(local_handle);
+	}
+	return result;
+}
+#else
 static int open_memmap(const uintptr_t spec)
 {
 	int result;
@@ -118,6 +141,7 @@ static int open_memmap(const uintptr_t spec)
 	}
 	return result;
 }
+#endif
 
 int plat_get_image_source(unsigned int image_id, uintptr_t *dev_handle,
 			  uintptr_t *image_spec)
