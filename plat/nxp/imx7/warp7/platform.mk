@@ -21,6 +21,7 @@ PLAT_INCLUDES		:=	-Iinclude/common/tbbr			\
 				-Iinclude/plat/arm/common/		\
 				-Iplat/nxp/common/			\
 				-Iplat/nxp/imx7/warp7/include		\
+				-Idrivers/nxp/mmc			\
 				-Idrivers/nxp/uart			\
 				-Iplat/nxp/imx7/include
 
@@ -29,9 +30,12 @@ include lib/xlat_tables_v2/xlat_tables.mk
 
 BL2_SOURCES		+=	common/desc_image_load.c			\
 				drivers/console/aarch32/console.S		\
+				drivers/emmc/emmc.c				\
+				drivers/io/io_block.c				\
 				drivers/io/io_fip.c				\
 				drivers/io/io_memmap.c				\
 				drivers/io/io_storage.c				\
+				drivers/nxp/mmc/fsl_mmc.c			\
 				drivers/nxp/uart/mxc_console.c			\
 				drivers/nxp/uart/mxc_crash_console.S		\
 				lib/aarch32/arm32_aeabi_divmod.c		\
