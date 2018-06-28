@@ -10,8 +10,11 @@
 #include <console.h>
 #include <debug.h>
 #include <desc_image_load.h>
+#include <emmc.h>
+#include <fsl_mmc.h>
 #include <optee_utils.h>
 #include <platform_def.h>
+#include <utils.h>
 #include <xlat_mmu_helpers.h>
 #include <xlat_tables_defs.h>
 #include <aips.h>
@@ -156,6 +159,7 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 				  u_register_t arg3, u_register_t arg4)
 {
 	uint32_t uart_en_bits = (uint32_t)UART1_CLK_SELECT;
+	fsl_mmc_params_t params;
 
 	/* Initialize the AIPS */
 	aips_init();
@@ -172,6 +176,12 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 	/* Init UART, storage and friends */
 	console_init(PLAT_WARP7_BOOT_UART_BASE, PLAT_WARP7_BOOT_UART_CLK_IN_HZ,
 		     PLAT_WARP7_CONSOLE_BAUDRATE);
+
+	zeromem(&params, sizeof(fsl_mmc_params_t));
+	params.reg_base = PLAT_WARP7_BOOT_EMMC_BASE;
+	params.clk_rate = 25000000;
+	params.bus_width = EMMC_BUS_WIDTH_8;
+	fsl_mmc_init(&params);
 
 	/* Open handles to persistent storage */
 	plat_warp7_io_setup();
