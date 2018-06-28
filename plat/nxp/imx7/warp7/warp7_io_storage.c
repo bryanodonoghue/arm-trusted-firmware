@@ -13,7 +13,6 @@
 #include <io_memmap.h>
 #include <platform_def.h>
 
-#define FIP_MMAP
 static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;
 
