@@ -28,6 +28,10 @@
 #define UART1_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
 			  CCM_TRGT_MUX_UART1_CLK_ROOT_OSC_24M)
 
+#define MMC_CLK_SELECT (CCM_TARGET_ROOT_ENABLE |\
+			  CCM_TRGT_MUX_NAND_USDHC_BUS_CLK_ROOT_AHB |\
+			  CCM_TARGET_POST_PODF(2))
+
 uintptr_t plat_get_ns_image_entrypoint(void)
 {
 	return WARP7_UBOOT_BASE;
@@ -169,6 +173,7 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 	/* Initialize clocks, regulators, pin-muxes etc */
 	clock_init();
 	clock_enable_uart(0, uart_en_bits);
+	clock_enable_mmc(2, MMC_CLK_SELECT);
 
 	/* Setup pin-muxes */
 	warp7_setup_pinmux();
