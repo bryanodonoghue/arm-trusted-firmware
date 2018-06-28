@@ -83,6 +83,22 @@ void clock_disable_uart(unsigned int uart_id)
 	mxc_clock_target_clr(ccm_trgt_id, 0xFFFFFFFF);
 }
 
+void clock_enable_mmc(unsigned int mmc_id, uint32_t mmc_clk_en_bits)
+{
+	unsigned int ccm_trgt_id = CCM_TRT_ID_USDHC1_CLK_ROOT + mmc_id;
+	unsigned int ccm_ccgr_id = CCM_CCGR_ID_USBHDC1 + mmc_id;
+
+	/* Check for error */
+	if (mmc_id > MXC_MAX_MMC_NUM)
+		return;
+
+	/* Set target register values */
+	mxc_clock_target_set(ccm_trgt_id, mmc_clk_en_bits);
+
+	/* Enable the clock gate */
+	mxc_clock_gate_enable(ccm_ccgr_id, true);
+}
+
 static void clock_uart_init(void)
 {
 	unsigned int i;
