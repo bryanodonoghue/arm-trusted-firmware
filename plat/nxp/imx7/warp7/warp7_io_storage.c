@@ -82,11 +82,19 @@ struct plat_io_policy {
 };
 
 static const struct plat_io_policy policies[] = {
+#ifndef FIP_MMAP
+	[FIP_IMAGE_ID] = {
+		&emmc_dev_handle,
+		(uintptr_t)&emmc_fip_spec,
+		open_emmc
+	},
+#else
 	[FIP_IMAGE_ID] = {
 		&memmap_dev_handle,
 		(uintptr_t)&fip_block_spec,
 		open_memmap
 	},
+#endif
 	[BL32_IMAGE_ID] = {
 		&fip_dev_handle,
 		(uintptr_t)&bl32_uuid_spec,
