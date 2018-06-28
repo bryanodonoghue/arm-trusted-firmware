@@ -21,7 +21,7 @@ static const io_dev_connector_t *emmc_dev_con;
 static uintptr_t emmc_dev_handle;
 
 static const io_block_spec_t emmc_fip_spec = {
-	.offset = WARP7_FIP_BASE,
+	.offset = WARP7_FIP_EMMC_BASE,
 	.length = WARP7_FIP_SIZE
 };
 
