@@ -9,6 +9,7 @@
 
 #include <arch.h>
 #include <common_def.h>
+#include <imx-regs.h>
 #include <tbbr_img_def.h>
 
 /* Special value used to verify platform parameters from BL2 to BL3-1 */
@@ -175,6 +176,9 @@
 #define PLAT_WARP7_BOOT_UART_BASE	0x30860000
 #define PLAT_WARP7_BOOT_UART_CLK_IN_HZ	24000000
 #define PLAT_WARP7_CONSOLE_BAUDRATE	115200
+
+/* MMC defines */
+#define PLAT_WARP7_BOOT_EMMC_BASE      (AIPS1_BASE + 0xb60000)
 
 /*
  * GIC related constants
