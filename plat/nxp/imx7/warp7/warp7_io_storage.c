@@ -18,7 +18,27 @@ static const io_dev_connector_t *fip_dev_con;
 static uintptr_t fip_dev_handle;
 
 #ifndef FIP_MMAP
+static const io_dev_connector_t *emmc_dev_con;
 static uintptr_t emmc_dev_handle;
+
+static const io_block_spec_t emmc_fip_spec = {
+	.offset = WARP7_FIP_BASE,
+	.length = WARP7_FIP_SIZE
+};
+
+static const io_block_dev_spec_t emmc_dev_spec = {
+	/* It's used as temp buffer in block driver. */
+	.buffer		= {
+		.offset	= WARP7_FIP_BASE,
+		/* do we need a new value? */
+		.length = WARP7_FIP_SIZE
+	},
+	.ops		= {
+		.read	= emmc_read_blocks,
+		.write	= emmc_write_blocks,
+	},
+	.block_size	= EMMC_BLOCK_SIZE,
+};
 
 static int open_emmc(const uintptr_t spec);
 
