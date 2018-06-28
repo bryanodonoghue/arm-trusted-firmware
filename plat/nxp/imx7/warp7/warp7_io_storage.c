@@ -185,6 +185,15 @@ void plat_warp7_io_setup(void)
 {
 	int result;
 
+#ifndef FIP_MMAP
+	result = register_io_dev_block(&emmc_dev_con);
+	assert(result == 0);
+
+	result = io_dev_open(emmc_dev_con, (uintptr_t)&emmc_dev_spec,
+			     &emmc_dev_handle);
+	assert(result == 0);
+
+#else
 	result = register_io_dev_memmap(&memmap_dev_con);
 	assert(result == 0);
 
@@ -192,6 +201,7 @@ void plat_warp7_io_setup(void)
 			     &memmap_dev_handle);
 	assert(result == 0);
 
+#endif
 	result = register_io_dev_fip(&fip_dev_con);
 	assert(result == 0);
 
