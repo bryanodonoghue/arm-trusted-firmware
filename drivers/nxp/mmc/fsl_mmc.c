@@ -195,7 +195,7 @@ static int fsl_send_cmd(emmc_cmd_t *cmd)
 
 	if (state & (INTSTATEN_CTOE | CMD_ERR)) {
 		err = -EIO;
-		ERROR("fsl mmc cmd %d error 0x%x\n", cmd->cmd_idx, state);
+		ERROR("fsl mmc cmd %d state 0x%x\n", cmd->cmd_idx, state);
 		goto out;
 	}
 
@@ -223,7 +223,7 @@ static int fsl_send_cmd(emmc_cmd_t *cmd)
 
 			if (state & (INTSTATEN_DTOE | DATA_ERR)) {
 				err = -EIO;
-				ERROR("fsl mmc data error 0x%x\n", state);
+				ERROR("fsl mmc data state 0x%x\n", state);
 				goto out;
 			}
 		} while ((state & flags) != flags);
