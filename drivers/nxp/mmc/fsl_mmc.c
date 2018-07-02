@@ -114,11 +114,14 @@ static void fsl_init(void)
 	mmio_clrsetbits32(reg_base + WATERMARKLEV, WMKLV_MASK, 16 | (16 << 16));
 }
 
+#define FSL_CMD_RETRIES	1000
+
 static int fsl_send_cmd(emmc_cmd_t *cmd)
 {
 	uintptr_t reg_base = fsl_params.reg_base;
 	unsigned int xfertype = 0, mixctl = 0, multiple = 0, data = 0, err = 0;
 	unsigned int state, flags = INTSTATEN_CC | INTSTATEN_CTOE;
+	unsigned int cmd_retries = 0;
 
 	assert(cmd);
 
@@ -191,11 +194,17 @@ static int fsl_send_cmd(emmc_cmd_t *cmd)
 	/* Wait for the command done */
 	do {
 		state = mmio_read_32(reg_base + INTSTAT);
-	} while (!(state & flags));
+		if (cmd_retries)
+			fsl_udelay(1);
+	} while ((!(state & flags)) && ++cmd_retries < FSL_CMD_RETRIES);
 
-	if (state & (INTSTATEN_CTOE | CMD_ERR)) {
-		err = -EIO;
-		ERROR("fsl mmc cmd %d state 0x%x\n", cmd->cmd_idx, state);
+	if ((state & (INTSTATEN_CTOE | CMD_ERR)) || cmd_retries == FSL_CMD_RETRIES) {
+		if (cmd_retries == FSL_CMD_RETRIES)
+			err = -ETIMEDOUT;
+		else
+			err = -EIO;
+		ERROR("fsl mmc cmd %d state 0x%x errno=%d\n",
+		      cmd->cmd_idx, state, err);
 		goto out;
 	}
 
