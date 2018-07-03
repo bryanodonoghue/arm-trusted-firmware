@@ -7,5 +7,6 @@
 #define __HAB_H__
 
 #include <imx-regs.h>
+#include <hab_arch.h>
 
 #endif /* __HAB_H__ */
