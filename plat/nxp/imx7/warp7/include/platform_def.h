@@ -180,8 +180,21 @@
 #define PLAT_WARP7_CONSOLE_BAUDRATE	115200
 
 /* MMC defines */
-#define PLAT_WARP7_BOOT_EMMC_BASE      (AIPS1_BASE + 0xb60000)
+#ifndef PLAT_WARP7_SD
+#define PLAT_WARP7_SD 3
+#endif
 
+#if PLAT_WARP7_SD == 1
+#define PLAT_WARP7_BOOT_EMMC_BASE	USDHC1_BASE
+#endif /* PLAT_WARP7_SD == 1 */
+
+#if PLAT_WARP7_SD == 2
+#define PLAT_WARP7_BOOT_EMMC_BASE	USDHC2_BASE
+#endif /* PLAT_WARP7_SD == 2 */
+
+#if PLAT_WARP7_SD == 3
+#define PLAT_WARP7_BOOT_EMMC_BASE	USDHC3_BASE
+#endif /* PLAT_WARP7_SD == 3 */
 /*
  * GIC related constants
  */
