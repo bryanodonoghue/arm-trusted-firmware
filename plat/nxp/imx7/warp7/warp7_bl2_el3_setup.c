@@ -163,6 +163,7 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 				  u_register_t arg3, u_register_t arg4)
 {
 	uint32_t uart_en_bits = (uint32_t)UART1_CLK_SELECT;
+	uint32_t mmc_clock_sel = PLAT_WARP7_SD - 1;
 	fsl_mmc_params_t params;
 
 	/* Initialize the AIPS */
@@ -173,7 +174,7 @@ void bl2_el3_early_platform_setup(u_register_t arg1, u_register_t arg2,
 	/* Initialize clocks, regulators, pin-muxes etc */
 	clock_init();
 	clock_enable_uart(0, uart_en_bits);
-	clock_enable_mmc(2, MMC_CLK_SELECT);
+	clock_enable_mmc(mmc_clock_sel, MMC_CLK_SELECT);
 
 	/* Setup pin-muxes */
 	warp7_setup_pinmux();
