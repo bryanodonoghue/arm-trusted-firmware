@@ -72,4 +72,9 @@
 /* SNVS base */
 #define SNVS_BASE			(AIPS1_BASE + 0x370000)
 
+/* MMC base */
+#define USDHC1_BASE			(AIPS1_BASE + 0xb40000)
+#define USDHC2_BASE			(AIPS1_BASE + 0xb50000)
+#define USDHC3_BASE			(AIPS1_BASE + 0xb60000)
+
 #endif /* __REGS_H__ */
