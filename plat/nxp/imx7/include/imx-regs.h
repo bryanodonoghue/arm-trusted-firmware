@@ -83,4 +83,7 @@
 /* Arm optional memory mapped counter module base address */
 #define SYS_CNTCTL_BASE			(AIPS2_BASE + 0x2c0000)
 
+/* Define CAAM AIPS offset */
+#define CAAM_AIPS_BASE			(AIPS3_BASE + 0x100000)
+
 #endif /* __REGS_H__ */
