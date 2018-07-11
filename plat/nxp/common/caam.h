@@ -63,4 +63,7 @@ struct caam_ctrl {
 #define JROWN_NS		BIT(3)
 #define JROWN_MID		0x01
 
+/* Declare CAAM API */
+void caam_init(void);
+
 #endif /* __CAAM_H__ */
