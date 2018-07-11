@@ -61,5 +61,6 @@ struct caam_ctrl {
 
 /* Job ring control bits */
 #define JROWN_NS		BIT(3)
+#define JROWN_MID		0x01
 
 #endif /* __CAAM_H__ */
