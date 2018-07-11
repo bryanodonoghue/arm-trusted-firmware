@@ -203,7 +203,7 @@
 /*
  * System counter
  */
-#define SYS_COUNTER_FREQ_IN_TICKS	((1000 * 1000 * 1000) / 16)
+#define SYS_COUNTER_FREQ_IN_TICKS	8000000		/* 8 MHz */
 
 /* Declare architectural extension sec to enable "smc #0" to compile */
 #ifdef __ASSEMBLY__
