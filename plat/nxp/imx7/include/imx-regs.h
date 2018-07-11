@@ -83,5 +83,6 @@
 /* Define CAAM AIPS offset */
 #define CAAM_AIPS_BASE			(AIPS3_BASE + 0x100000)
 #define CAAM_NUM_JOB_RINGS		0x03
+#define CAAM_NUM_RTIC			0x04
 
 #endif /* __REGS_H__ */
