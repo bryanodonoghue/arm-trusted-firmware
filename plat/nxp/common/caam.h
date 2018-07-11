@@ -8,6 +8,7 @@
 #define __CAAM_H__
 
 #include <stdint.h>
+#include <arch.h>
 #include <imx-regs.h>
 
 struct caam_job_ring {
@@ -57,5 +58,8 @@ struct caam_ctrl {
 	uint32_t		dar;
 	uint32_t		drr;
 };
+
+/* Job ring control bits */
+#define JROWN_NS		BIT(3)
 
 #endif /* __CAAM_H__ */
