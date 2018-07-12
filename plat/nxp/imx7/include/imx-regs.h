@@ -86,4 +86,10 @@
 #define CAAM_NUM_RTIC			0x04
 #define CAAM_NUM_DECO			0x01
 
+/* Define watchdog base addresses */
+#define WDOG1_BASE			(AIPS1_BASE + 0x280000)
+#define WDOG2_BASE			(AIPS1_BASE + 0x290000)
+#define WDOG3_BASE			(AIPS1_BASE + 0x2A0000)
+#define WDOG4_BASE			(AIPS1_BASE + 0x280000)
+
 #endif /* __REGS_H__ */
