@@ -987,5 +987,7 @@ void clock_init(void);
 void clock_enable_uart(unsigned int uart_id, uint32_t uart_clk_en_bits);
 void clock_disable_uart(unsigned int uart_id);
 void clock_enable_mmc(unsigned int mmc_id, uint32_t mmc_clk_en_bits);
+void clock_set_wdog_clk_root_bits(uint32_t wdog_clk_root_en_bits);
+void clock_enable_wdog(unsigned int wdog_id);
 
 #endif /* __CLOCK_H__ */
