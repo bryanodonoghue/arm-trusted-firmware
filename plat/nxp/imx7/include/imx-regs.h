@@ -92,4 +92,7 @@
 #define WDOG3_BASE			(AIPS1_BASE + 0x2A0000)
 #define WDOG4_BASE			(AIPS1_BASE + 0x280000)
 
+/* Define the maximum number of WDOG blocks on this SoC */
+#define MXC_MAX_WDOG_NUM		0x04
+
 #endif /* __REGS_H__ */
