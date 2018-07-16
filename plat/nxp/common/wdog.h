@@ -54,4 +54,7 @@ static inline int wicr_calc_wict(int sec, int half_sec)
 /* WMCR bits */
 #define WMCR_PDE		BIT(0)
 
+/* External facing API */
+void wdog_init(void);
+
 #endif /* __WDOG_H__ */
