@@ -101,9 +101,9 @@
 /* Define FIP image location at 1MB offset */
 #define WARP7_FIP_MMC_BASE		(1024 * 1024)
 
-/* Define the absolute location of DTB 0x83000000 - 0x83100000 */
+/* Define the absolute location of DTB overlay 0x82000000 - 0x82100000 */
 #define WARP7_DTB_SIZE			0x00100000
-#define WARP7_DTB_BASE			(DRAM_BASE + 0x03000000)
+#define WARP7_DTB_BASE			(DRAM_BASE + 0x02000000)
 #define WARP7_DTB_LIMIT			(WARP7_DTB_BASE + WARP7_DTB_SIZE)
 
 /*
@@ -145,6 +145,8 @@
  * 0x83100000 +-----------------+
  *            |       DDR       | DTB
  * 0x83000000 +-----------------+
+ *            |       DDR       | DTB overlay
+ * 0x82000000 +-----------------+
  *            |       DDR       | Unallocated
  * 0x80100000 +-----------------+
  *            |       DDR       | FIP
